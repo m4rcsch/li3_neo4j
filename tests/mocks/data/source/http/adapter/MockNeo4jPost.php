@@ -1,7 +1,9 @@
 <?php
 /**
- * Lithium: the most rad php framework
+ * li3_neo4j: a lithium database Adapter for the neo4j Graph Database
+ * Derived from Lithiums MockCouchPosts.php
  *
+ * @see           lithium\tests\\mocks\data\source\http\adapter\MockCouchPost.php
  * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
  * @license       http://opensource.org/licenses/bsd-license.php The BSD License
  */
