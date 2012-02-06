@@ -32,7 +32,7 @@ class Neo4jTest extends \lithium\test\Unit {
 		'socket' => 'lithium\tests\mocks\data\source\http\adapter\MockSocket'
 	);
 
-	protected $_model = 'lithium\tests\mocks\data\source\http\adapter\MockCouchPost';
+	protected $_model = 'li3_neo4j\tests\mocks\data\source\http\adapter\MockNeo4jPost';
 
 	public function setUp() {
 		$this->_configs = Connections::config();
@@ -46,6 +46,7 @@ class Neo4jTest extends \lithium\test\Unit {
 
 		$model = $this->_model;
 		$entity = new Document(compact('model'));
+		var_dump($entity);
 		$this->query = new Query(compact('model', 'entity'));
 	}
 
@@ -53,6 +54,14 @@ class Neo4jTest extends \lithium\test\Unit {
 		Connections::reset();
 		Connections::config($this->_configs);
 		unset($this->query);
+	}
+
+	public function testAllMethodsNoConnection() {
+		$this->assertTrue($this->db->connect());
+		$this->assertTrue($this->db->disconnect());
+		$this->assertFalse($this->db->get());
+		$this->assertFalse($this->db->post());
+		$this->assertFalse($this->db->put());
 	}
 }
 
