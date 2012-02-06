@@ -39,6 +39,7 @@ class Neo4j extends \lithium\data\source\Http {
 
 	/**
 	 * Classes used by `Neo4j`.
+	 * @todo: think about creatng a new Entity Type: Node
 	 *
 	 * @var array
 	 */
@@ -472,7 +473,7 @@ class Neo4j extends \lithium\data\source\Http {
 
 	/**
 	 * Formats a CouchDb result set into a standard result to be passed to item.
-	 *
+	 * @todo: rewrite this to fit neo4j properties
 	 * @param array $data data returned from query
 	 * @return array
 	 */
