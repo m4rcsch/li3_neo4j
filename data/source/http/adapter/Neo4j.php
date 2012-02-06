@@ -97,10 +97,7 @@ class Neo4j extends \lithium\data\source\Http {
 	public function configureClass($class) {
 		return array(
 			'meta' => array('key' => 'id', 'locked' => false), //@todo: think about keys in Neo4j
-			'schema' => array(
-				'id' => array('type' => 'string'),
-				'rev' => array('type' => 'string')
-			)
+			'schema' => array()
 		);
 	}
 
@@ -466,9 +463,9 @@ class Neo4j extends \lithium\data\source\Http {
 		}
 		$features = array(
 			'arrays' => true,
-			'transactions' => false,
+			'transactions' => true,
 			'booleans' => true,
-			'relationships' => false
+			'relationships' => true
 		);
 		return isset($features[$feature]) ? $features[$feature] : null;
 	}
