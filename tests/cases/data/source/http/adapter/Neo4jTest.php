@@ -46,7 +46,6 @@ class Neo4jTest extends \lithium\test\Unit {
 
 		$model = $this->_model;
 		$entity = new Document(compact('model'));
-		var_dump($entity);
 		$this->query = new Query(compact('model', 'entity'));
 	}
 
@@ -62,6 +61,21 @@ class Neo4jTest extends \lithium\test\Unit {
 		$this->assertFalse($this->db->get());
 		$this->assertFalse($this->db->post());
 		$this->assertFalse($this->db->put());
+	}
+
+	public function testConnect() {
+		$this->db = new Neo4j($this->_testConfig);
+		$result = $this->db->connect();
+		$this->assertTrue($result);
+	}
+
+	public function testDisconnect() {
+		$couchdb = new Neo4j($this->_testConfig);
+		$result = $couchdb->connect();
+		$this->assertTrue($result);
+
+		$result = $couchdb->disconnect();
+		$this->assertTrue($result);
 	}
 }
 
