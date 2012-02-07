@@ -36,11 +36,46 @@ class Neo4jTest extends \lithium\test\Unit {
 
 	protected $_model = 'li3_neo4j\tests\mocks\data\source\http\adapter\MockNeo4jPost';
 
+	/**
+	 * Checking with curl is not a very nice idea, but connection to a non existand resource will
+	 * throw an uncatchable Exception..
+	 */
+	public function skip() {
+		extract($this->_testConfig);
+		$domain = "{$type}://{$host}:{$port}";
+
+		if(!isset($timeout) && (integer) $timeout == 0) {
+			$timeout = 10;
+		}
+
+		if(!filter_var($domain, FILTER_VALIDATE_URL)) {
+			$this->skipIf(true, 'URL is not Valid: ' . $domain);
+		}
+
+		//initialize curl
+		$curlInit = curl_init($domain);
+		curl_setopt($curlInit, CURLOPT_CONNECTTIMEOUT, $timeout);
+		curl_setopt($curlInit, CURLOPT_HEADER, true);
+		curl_setopt($curlInit, CURLOPT_NOBODY, true);
+		curl_setopt($curlInit, CURLOPT_RETURNTRANSFER, true);
+
+		//get answer
+		$response = curl_exec($curlInit);
+
+		curl_close($curlInit);
+
+		if (!$response) {
+			$this->skipIf(true, 'Database Server for `Neo4j` not available');
+		}
+
+	}
+
+
 	public function setUp() {
 		$this->_configs = Connections::config();
 
 		Connections::reset();
-		$this->db = new Neo4j();
+		$this->db = new Neo4j(array('socket' => false));
 
 		Connections::config(array(
 			'mock-neo4j-connection' => array('object' => &$this->db, 'adapter' => 'Neo4j')
@@ -60,7 +95,6 @@ class Neo4jTest extends \lithium\test\Unit {
 	public function testAllMethodsNoConnection() {
 		$this->assertTrue($this->db->connect());
 		$this->assertTrue($this->db->disconnect());
-		//var_dump($this->db);
 		//$this->assertFalse($this->db->get());
 		//$this->assertFalse($this->db->post());
 		//$this->assertFalse($this->db->put());
